@@ -1,7 +1,8 @@
 const electron = require("electron");
-const ffmpeg = require("fluent-ffmpeg");
-
 const { app, BrowserWindow, ipcMain } = electron;
+
+const ffmpeg = require("fluent-ffmpeg");
+const path = require("path");
 
 // declair mainWindow
 let mainWindow;
@@ -10,9 +11,15 @@ let mainWindow;
 const ready = () => {
   console.log("--- index.js - ready start");
   mainWindow = new BrowserWindow({
+    // webPreferences: {
+    //   nodeIntegration: true, // security warning. false is default value after Electron v5
+    //   contextIsolation: false, // protect against prototype pollution
+    // },
     webPreferences: {
-      nodeIntegration: true, // security warning. false is default value after Electron v5
-      contextIsolation: false, // protect against prototype pollution
+      nodeIntegration: false, // is default value after Electron v5
+      contextIsolation: true, // protect against prototype pollution
+      enableRemoteModule: false, // turn off remote
+      preload: path.join(__dirname, "preload.js"), // use a preload script
     },
   });
   mainWindow.loadURL(`file://${__dirname}/index.html`);

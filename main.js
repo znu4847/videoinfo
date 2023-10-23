@@ -1,5 +1,5 @@
-const electron = require("electron");
-const { ipcRenderer } = electron;
+// const electron = require("electron");
+// const { ipcRenderer } = electron;
 
 // Event - submit
 const submit = (event) => {
@@ -11,15 +11,17 @@ const submit = (event) => {
     return;
   }
   const { path } = files[0];
-  ipcRenderer.send("video:submit", path);
+  // ipcRenderer.send("video:submit", path);
+  window.api.send("video:submit", path);
   console.log("--- main.js - submit end");
 };
 document.querySelector("form").addEventListener("submit", submit);
 
 // Event - video:metadata
-const videoMetadata = (event, duration) => {
+const videoMetadata = (duration) => {
   console.log("--- main.js - videoMetadata start");
   document.querySelector("#result").innerHTML = `Video is ${duration} seconds`;
   console.log("--- main.js - videoMetadata end");
 };
-ipcRenderer.on("video:metadata", videoMetadata);
+// ipcRenderer.on("video:metadata", videoMetadata);
+window.api.receive("video:metadata", videoMetadata);
